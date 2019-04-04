@@ -9,7 +9,7 @@ git != github
 **GIT = DVCS (Distributed Version Control System)**
 
 이 파일을 그냥 바꿔봤습니다. 테스트할라고요
-
+nailer branch에서 commit이 가해진 후 work2 branch로 왔어요 이제 work2 branch에서 작업을 했다고 가정하고 origin에 올릴겁니다.
 **git을 사용하는 이유는?**
 
 - 협업할 때 git의 장점이 드러난다.
