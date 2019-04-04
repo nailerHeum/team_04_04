@@ -1,15 +1,17 @@
+
+
 ### 2019.04.04 Step 1-4
 
 ## git 사용하기
 
-----
+------
 
 git != github
 
 **GIT = DVCS (Distributed Version Control System)**
 
-이 파일을 그냥 바꿔봤습니다. 테스트할라고요
-nailer branch에서 commit이 가해진 후 work2 branch로 왔어요 이제 work2 branch에서 작업을 했다고 가정하고 origin에 올릴겁니다.
+
+
 **git을 사용하는 이유는?**
 
 - 협업할 때 git의 장점이 드러난다.
@@ -70,7 +72,7 @@ commit 객체는 .git의 objects 에 저장되어 있다.
 
 ### Honux  Git 강의 1강
 
-----
+------
 
 commit 주의사항
 
@@ -82,7 +84,7 @@ commit 주의사항
 
 ### Honux git 강의 2, 3: GIT 변경사항 취소하기
 
-----
+------
 
 **`branch`** - 기존 내용을 유지한 채 새로운 내용을 추가하고 싶을 때 사용한다.
 
@@ -147,7 +149,7 @@ git checkout -b test-branch 56a4e5c08
 
 ### 오후 강의
 
-----
+------
 
 git은 내용기반이기 때문에 중복되는 내용에 대해서 효율적으로 저장한다.
 
@@ -155,9 +157,23 @@ git은 내용기반이기 때문에 중복되는 내용에 대해서 효율적�
 
 
 
-### Honux git 강의 4: GIT merge!
+- reset : HEAD와 branch를 동시에 해당 commit으로 옮김
 
----
+- rebase:  현재까지의 변경사항을 통째로 다른곳에 얹어놓는다.
+
+  rebase와 merge가 유사한 경우인데
+
+  rebase가 위험한 경우가 있다.
+
+  - rebase는 새로운 commit을 만들어내는 것이기 때문에 원격저장소에 이미 올라간 경우 복제된 commit들을 만들어낸다.
+
+- merge는 commit이 날아가지 않기 때문에 복구가 용이하고 안전하다. 
+
+
+
+###  Honux git 강의 4: GIT merge!
+
+------
 
 **merge** : 하나의 브랜치를 현재 브랜치와 합치는 것
 
@@ -172,7 +188,7 @@ git은 내용기반이기 때문에 중복되는 내용에 대해서 효율적�
 
 
 
-![git4-1.png](/Users/csheum/Desktop/codesquad2/js_step1/step1-4_git/js1-4/git4-1.png)
+![git4-1.png](nailer_git/git4-1.png)
 
 단순히 master branches 가리키는 commit을 c4로 옮겨주면 되는거니까,
 
@@ -180,9 +196,122 @@ git은 내용기반이기 때문에 중복되는 내용에 대해서 효율적�
 
 
 
+**상황2**  : 가지가 생겨난 경우
+
+------
+
+1. 과거의 commit으로부터 branch를 생성해서 작업을 한 경우
+2. 새로운 branch 작업 이후에 HEAD에 다른 새 commit이 있는 경우
+3. 여러 branch를 동시에 작업하면서 merge를 시도할 경우
+
+위 3가지 경우가 속한다.
+
+![git4-3.PNG](nailer_git/git4-3.png)
+
+마찬가지로 HEAD branch에서 target branch를 병합하면 된다.
+
+하지만 이 때 여러 branch에서 동시에 변경한 filedl 있을 경우 conflict가 발생할 수 있다. 
+
+혼자 작업하는 경우의 충돌 해결 케이스
+
+1. 보통 가장 최신 내용 하나만 선택하면 되는 경우
+2. 최신 내용은 보통 target branch에 있는 경우가 많음
+3. 여러 파일에 변경 사항이 혼재해 있는 경우도 내가 개발했으므로 크게 어렵지 않다. 
+
+잘 해결할 경우 아래와 같은 모양이 된다.
+
+![git4-4.PNG](nailer_git/git4-4.png)
 
 
 
+
+
+### Honux git 강의 5: git pull과 충돌 해결하기!
+
+------
+
+- conflict는 merge 실패시 발생한다. 
+- 안쓰는 branch를 삭제한다. 
+  - 현재 branch(HEAD)가 아닌 경우 간단하게 삭제 가능
+  - branch를 삭제했을 경우 사라지는 commit이 있는지 없는지 확인
+
+**git pull**
+
+- server의 내용이 최신일 경우 pull을 적용한다. 
+- pull = fetch + merge
+
+**충돌의 발생원인**
+
+- merge를 실패했을 경우 발생
+- 보통 다른 가지의 두 commit이 같은 파일을 편집했을 경우 발생한다.
+
+**해결방안**
+
+- 에디터를 이용한 해결
+  - 충돌난 파일을 꼼꼼히 읽어가며 수동으로 수정한다.
+- merge tool을 이용한 해결
+- sourceTree를 이용한 해결
+- 혼자 작업할경우 두 변경사항중 하나가 최신이고 정답일 가능성이 높음
+- 해결했는데 이상해졌다면 reset을 이용한다!
+
+
+
+### Honux git 강의 6: reset으로 commit 되돌리기
+
+------
+
+```bash
+git reset <target commit>
+```
+
+`reset --soft` 는 HEAD가 가리키는 branch를 target commit으로 옮기기만 한다. HEAD만 target commit으로 가게 되고 working dir과 stage는 여전히 기존의 상태를 유지
+
+
+
+`reset --mixed` 는 stage에도 변경을 가한다.
+
+
+
+`reset --hard` 는 stage와 working dir까지 target commit의 상태로 모두 변경을 한다.-> 이전 commit은 사라지게 된다.
+
+
+
+`reset` 이후의 push는 `--force` 옵션을 선택해야 한다.
+
+
+
+### Honux git 강의 7: 새로운 branch로 돌아가기
+
+------
+
+1. 되돌릴 target commit으로 branch 생성
+2. 해당 branch로 checkout
+3. 변경 사항 수정 후 commit
+4. master에 merge
+
+장점 : 쉽다. 기록이 모두 남는다.
+
+단점 : 트리가 지저분해진다.
+
+- 만약 master에서 수정된 파일과 새로운 branch에서 수정된 파일이 겹친다면 conflict가 발생하지 않을까
+
+### Honux git 강의 8: Revert를 사용해 commit 되돌리기
+
+------
+
+```
+git revert <되돌릴 커밋> 
+```
+
+ 여러개의 commit을 되돌리고 싶다면 아래처럼 범위설정이 가능하다.
+
+```
+git revert 2664ce8..15413dc
+```
+
+ 장점 : 이전 commit 기록이 다 남아 있다.
+
+ 단점 : 충돌 날 가능성이 매우 높다. 다소 어렵다.
 
 
 
@@ -260,10 +389,6 @@ git은 내용기반이기 때문에 중복되는 내용에 대해서 효율적�
     ```
 
 이후 4단계부터 다시 진행
-
-
-
-
 
 
 
