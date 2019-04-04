@@ -8,7 +8,7 @@ git != github
 
 **GIT = DVCS (Distributed Version Control System)**
 
-
+이 파일을 그냥 바꿔봤습니다. 테스트할라고요
 
 **git을 사용하는 이유는?**
 
