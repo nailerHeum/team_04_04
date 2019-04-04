@@ -9,7 +9,7 @@ git != github
 **GIT = DVCS (Distributed Version Control System)**
 
 이 파일을 그냥 바꿔봤습니다. 테스트할라고요
-
+nailer branch에서 commit이 가해진 후 work2 branch로 왔어요 이제 work2 branch에서 작업을 했다고 가정하고 origin에 올릴겁니다.
 **git을 사용하는 이유는?**
 
 - 협업할 때 git의 장점이 드러난다.
@@ -179,6 +179,87 @@ git은 내용기반이기 때문에 중복되는 내용에 대해서 효율적�
 브랜치의 참조만 갱신되는 상황이다!
 
 
+
+
+
+
+
+
+
+### Codesquad PR 과정 재정리
+
+1. 팀 프로젝트 저장소에 내 아이디에 해당하는 branch가 있는지 확인 후 없을 경우 프로젝트 마스터에게 branch 생성을 요청한다. branch 생성 이후
+
+2.  프로젝트를 내 계정으로 fork한다. 
+
+3. fork한 프로젝트를 자신의 컴퓨터로 clone한 후 디렉토리로 이동한다. 
+
+   ```bash
+   git clone -b nailer --single-branch https://github.com/nailer/team_04_04
+   ```
+
+   특정 branch 하나만을 local로 clone해야 할 경우 위와 같이 옵션을 줄 수 있다. (-b와 —single-branch는 동일한 역할이기 때문에 하나만 사용해도 된다.)
+
+4. 기능 구현을 위한 브랜치 생성(여기부터 반복)
+
+   ```bash
+   git checkout -b step1
+   ```
+
+5. 기능 구현 후 add, commit
+
+   step 1에 대해 수정을 가하고, 
+
+   ```bash
+   git commit -m "수정사항 등"
+   ```
+
+6. 내 원격 저장소에 올리기
+
+   ```bash
+   git push origin step1
+   ```
+
+7. GitHub 서비스에서 pull request를 보낸다.
+
+   이거는 내가 작업한 내 저장소로 가서 해당 branch를 선택한 후 pull request버튼을 누르면 할 수 있다.
+
+8. 이제 pull request를 reviewer가 피드백을 하고 reject를 먹으면 다시 수정해서 다시 pull request를 날린다. 마침내 reviewer가 승인하면 마스터에 의해서 merge가 진행된다.
+
+9. merge를 완료했다는 통보를 받으면 branch 변경 및 작업 branch 삭제한다.
+
+   (완료되었기 때문에 step1은 원격 저장소)
+
+   ```bash
+   git checkout nailer
+   git branch -D step1
+   ```
+
+10. merge한 codesquad 저장소와 동기화하기 위해 codesquad 저장소 추가
+
+    (upstream이란 리모트를 등록하는데 이건 최초 한번만 한다)
+
+    ```bash
+    git remote add upstream https://github.com/codesquad/specificproject
+    ```
+
+11. codesquad 저장소에서 내 branch 갖고오기(갱신하기)
+
+    ```bash
+    git fetch upstream nailer
+    ```
+
+    내 이름의 저장소 nailer에 팀 프로젝트 upstream을 갖고 온다.
+
+    (위 과정으로 생각해보면 step1의 내용이 nailer에 적용되게 된다.)
+
+12. codesquad 저장소 branch와 동기화하기
+
+    ```bash
+    git rebase upstream/nailer
+    ```
+
+이후 4단계부터 다시 진행
 
 
 
